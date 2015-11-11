@@ -14,7 +14,7 @@ int main() {
   long tenTen = pow(10, 10);
   unsigned long long sum = 0;
 
-  powerMod(1000, 1000, (long)pow(10, 10));
+  powerMod(999, 999, (long)pow(10, 10));
 }
 
 void convertToBinary(int n)
@@ -50,11 +50,31 @@ long powerMod(int a, int b, long mod) {
 
   if (bin.length() > 2) {
   for (int i = 2; i < bin.length(); i++) {
-    modulos[i] = (long long)pow(modulos[i - 1], 2) % mod;
+    modulos[i] = (__uint128)pow(modulos[i - 1], 2) % mod;
   }
   }
 
   for (int i = 0; i < bin.length(); i++) {
-    cout << modulos[i] << ", ";
+    cout << modulos[i] << "\t";
   }
+  
+  int binArr [bin.length()];
+  cout << bin << "\n";
+  for (int i = 0; i < bin.length(); i++) {
+    binArr[i] = 49 - bin.c_str()[i];
+    //    cout << binArr[i] << ", ";
+    if (binArr[i] == 0) binArr[i] = 1;
+    else binArr[i] = 0;
+    cout << binArr[i] << "\t";
+  }
+
+  unsigned long long premod = 1;
+  for (int i = 0; i < bin.length(); i++) {
+    if (binArr[i] == 1) {
+      premod *= modulos[i];
+    }
+  }
+
+  cout << premod % mod;
+  
 }
