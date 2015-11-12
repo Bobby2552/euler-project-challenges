@@ -1,12 +1,15 @@
 #include <iostream>
 #include <math.h>
 #include <sstream>
+#include <boost/multiprecision/cpp_int.hpp>
 
 using namespace std;
+using namespace boost::multiprecision;
 
 void convertToBinary(int);
 string NumberToString(long);
 long powerMod(int, int, long);
+uint128_t bigPow(uint128_t, int);
 
 string bin = "";
 
@@ -50,7 +53,7 @@ long powerMod(int a, int b, long mod) {
 
   if (bin.length() > 2) {
   for (int i = 2; i < bin.length(); i++) {
-    modulos[i] = (__uint128)pow(modulos[i - 1], 2) % mod;
+    modulos[i] = (uint128_t)pow(modulos[i - 1], 2) % mod;
   }
   }
 
@@ -68,7 +71,7 @@ long powerMod(int a, int b, long mod) {
     cout << binArr[i] << "\t";
   }
 
-  unsigned long long premod = 1;
+  uint128_t premod = 1;
   for (int i = 0; i < bin.length(); i++) {
     if (binArr[i] == 1) {
       premod *= modulos[i];
@@ -77,4 +80,19 @@ long powerMod(int a, int b, long mod) {
 
   cout << premod % mod;
   
+}
+
+uint128_t bigPow(uint128_t base, int pow) {
+  if (pow == 0) {
+    return 1;
+  }
+  else if (pow == 1) {
+    return base;
+  }
+  else if (pow == 2) {
+    return base * base;
+  }
+  else {
+    reutrn bigPow(base * base, pow - 1);
+  }
 }
