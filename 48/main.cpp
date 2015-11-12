@@ -37,9 +37,9 @@ string NumberToString (long Number)
 
 long powerMod(int a, int b, long mod) {
   convertToBinary(b);
-  long long modulos [bin.length()];
-  if (b >= 1) modulos[0] = (long long)pow(a, 1) % mod;
-  if (b >= 2) modulos[1] = (long long)pow(a, 2) % mod; 
+  uint128_t modulos [bin.length()];
+  if (b >= 1) modulos[0] = (uint128_t)bigPow(a, 1) % mod;
+  if (b >= 2) modulos[1] = (uint128_t)bigPow(a, 2) % mod; 
   int exps [bin.length()];
   exps[0] = 1;
   //if (b == 2) exps[1] = 2;
@@ -53,7 +53,7 @@ long powerMod(int a, int b, long mod) {
 
   if (bin.length() > 2) {
   for (int i = 2; i < bin.length(); i++) {
-    modulos[i] = (uint128_t)pow(modulos[i - 1], 2) % mod;
+    modulos[i] = bigPow(modulos[i - 1], 2) % mod;
   }
   }
 
@@ -83,16 +83,11 @@ long powerMod(int a, int b, long mod) {
 }
 
 uint128_t bigPow(uint128_t base, int pow) {
-  if (pow == 0) {
-    return 1;
+  uint128_t ret;
+  if (pow == 0) return 1;
+  if (pow == 1) ret = base;
+  for (int i = 2; i <= pow; i++) {
+    ret *= base;
   }
-  else if (pow == 1) {
-    return base;
-  }
-  else if (pow == 2) {
-    return base * base;
-  }
-  else {
-    reutrn bigPow(base * base, pow - 1);
-  }
+  return ret;
 }
